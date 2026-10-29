@@ -6,7 +6,7 @@ window.addEventListener("load", () => {
         height: 640,
         backgroundColor: "#091322",
         scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
-        physics: { default: "arcade", arcade: { gravity: { y: 920 }, debug: false } },
+        physics: { default: "arcade", arcade: { gravity: { x: 0, y: 920 }, debug: false } },
         scene: [PlatformerLevel]
     });
 });

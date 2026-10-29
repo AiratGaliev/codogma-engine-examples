@@ -85,7 +85,7 @@ class InteractionLab extends Phaser.Scene {
                     this.input.setDraggable(card);
                 }
                 this.input.on("dragstart", (_pointer: Phaser.Input.Pointer, object: Phaser.GameObjects.GameObject) => {
-                    object.setDepth(10);
+                    (object as Phaser.GameObjects.Rectangle).setDepth(10);
                 });
                 this.input.on("drag", (_pointer: Phaser.Input.Pointer, object: Phaser.GameObjects.GameObject, dragX: number, dragY: number) => {
                     const card = object as Phaser.GameObjects.Rectangle;
