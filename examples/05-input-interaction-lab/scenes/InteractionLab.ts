@@ -90,11 +90,14 @@ class InteractionLab extends Phaser.Scene {
                     card.setData("homeX", card.x);
                     card.setData("homeY", card.y);
                     card.setData("caption", label);
+                    label.setDepth(1);
                     card.setInteractive({ useHandCursor: true });
                     this.input.setDraggable(card);
                 }
                 this.input.on("dragstart", (_pointer: Phaser.Input.Pointer, object: Phaser.GameObjects.GameObject) => {
-                    (object as Phaser.GameObjects.Rectangle).setDepth(10);
+                    const card = object as Phaser.GameObjects.Rectangle;
+                    card.setDepth(10);
+                    (card.getData("caption") as Phaser.GameObjects.Text).setDepth(11);
                 });
                 this.input.on("drag", (_pointer: Phaser.Input.Pointer, object: Phaser.GameObjects.GameObject, dragX: number, dragY: number) => {
                     const card = object as Phaser.GameObjects.Rectangle;
@@ -120,6 +123,7 @@ class InteractionLab extends Phaser.Scene {
                         this.statusText.setText("Промах: карточка возвращена на исходную позицию.");
                     }
                     card.setDepth(0);
+                    caption.setDepth(1);
                 });
     }
 
