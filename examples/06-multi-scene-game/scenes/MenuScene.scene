@@ -90,7 +90,8 @@
       "height": 72,
       "isFilled": true,
       "fillColor": 3462859,
-      "fillAlpha": 1
+      "fillAlpha": 1,
+      "scope": "CLASS"
     },
     {
       "type": "Text",

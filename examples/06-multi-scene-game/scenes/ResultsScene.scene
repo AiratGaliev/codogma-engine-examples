@@ -77,7 +77,8 @@
       "fontStyle": "bold",
       "align": "center",
       "originX": 0.5,
-      "originY": 0.5
+      "originY": 0.5,
+      "scope": "CLASS"
     },
     {
       "type": "Rectangle",
@@ -90,7 +91,8 @@
       "height": 70,
       "isFilled": true,
       "fillColor": 16760169,
-      "fillAlpha": 1
+      "fillAlpha": 1,
+      "scope": "CLASS"
     },
     {
       "type": "Text",

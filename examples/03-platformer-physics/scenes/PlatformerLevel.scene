@@ -123,7 +123,8 @@
       "height": 52,
       "isFilled": true,
       "fillColor": 2575188,
-      "fillAlpha": 1
+      "fillAlpha": 1,
+      "scope": "CLASS"
     },
     {
       "type": "Rectangle",
@@ -136,7 +137,8 @@
       "height": 24,
       "isFilled": true,
       "fillColor": 3462859,
-      "fillAlpha": 1
+      "fillAlpha": 1,
+      "scope": "CLASS"
     },
     {
       "type": "Rectangle",
@@ -149,7 +151,8 @@
       "height": 24,
       "isFilled": true,
       "fillColor": 9141503,
-      "fillAlpha": 1
+      "fillAlpha": 1,
+      "scope": "CLASS"
     },
     {
       "type": "Rectangle",
@@ -162,7 +165,8 @@
       "height": 24,
       "isFilled": true,
       "fillColor": 16760169,
-      "fillAlpha": 1
+      "fillAlpha": 1,
+      "scope": "CLASS"
     },
     {
       "type": "Rectangle",
@@ -175,7 +179,8 @@
       "height": 48,
       "isFilled": true,
       "fillColor": 5104084,
-      "fillAlpha": 1
+      "fillAlpha": 1,
+      "scope": "CLASS"
     },
     {
       "type": "Ellipse",
@@ -188,7 +193,8 @@
       "height": 24,
       "isFilled": true,
       "fillColor": 16765286,
-      "fillAlpha": 1
+      "fillAlpha": 1,
+      "scope": "CLASS"
     },
     {
       "type": "Ellipse",
@@ -201,7 +207,8 @@
       "height": 24,
       "isFilled": true,
       "fillColor": 16765286,
-      "fillAlpha": 1
+      "fillAlpha": 1,
+      "scope": "CLASS"
     },
     {
       "type": "Ellipse",
@@ -214,7 +221,8 @@
       "height": 24,
       "isFilled": true,
       "fillColor": 16765286,
-      "fillAlpha": 1
+      "fillAlpha": 1,
+      "scope": "CLASS"
     },
     {
       "type": "Text",
@@ -262,7 +270,8 @@
       "fontStyle": "bold",
       "align": "right",
       "originX": 1,
-      "originY": 0.5
+      "originY": 0.5,
+      "scope": "CLASS"
     },
     {
       "type": "Text",
@@ -278,7 +287,8 @@
       "fontStyle": "bold",
       "align": "center",
       "originX": 0.5,
-      "originY": 0.5
+      "originY": 0.5,
+      "scope": "CLASS"
     }
   ],
   "plainObjects": [],
