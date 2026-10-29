@@ -23,7 +23,7 @@
 ## Проверки перед PR
 
 ```bash
-npm install --no-audit --no-fund
+npm ci --no-audit --no-fund
 npm test
 npm run build
 ```

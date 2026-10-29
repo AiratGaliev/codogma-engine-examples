@@ -15,7 +15,7 @@
 Требования: Node.js 22.x и npm.
 
 ```bash
-npm install --no-audit --no-fund
+npm ci --no-audit --no-fund
 npm run test
 npm run build
 ```
