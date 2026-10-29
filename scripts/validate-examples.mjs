@@ -59,11 +59,11 @@ if (platformerScene) {
     const background = byLabel("background");
     const skyPanel = byLabel("skyPanel");
 
-    const viewportMatch = platformerMain.match(/width:\\s*(\\d+)/);
-    const gravityMatch = platformerMain.match(/gravity:\\s*\\{\\s*x:\\s*0,\\s*y:\\s*(\\d+(?:\\.\\d+)?)\\s*\\}/);
-    const jumpMatch = platformerSource.match(/setVelocityY\\(\\s*(-?\\d+(?:\\.\\d+)?)\\s*\\)/);
-    const worldBoundsMatch = platformerSource.match(/this\\.physics\\.world\\.setBounds\\(0,\\s*0,\\s*(\\d+(?:\\.\\d+)?),\\s*640\\)/);
-    const cameraBoundsMatch = platformerSource.match(/this\\.cameras\\.main\\.setBounds\\(0,\\s*0,\\s*(\\d+(?:\\.\\d+)?),\\s*640\\)/);
+    const viewportMatch = platformerMain.match(/width:\s*(\d+)/);
+    const gravityMatch = platformerMain.match(/gravity:\s*\{\s*x:\s*0,\s*y:\s*(\d+(?:\.\d+)?)\s*\}/);
+    const jumpMatch = platformerSource.match(/setVelocityY\(\s*(-?\d+(?:\.\d+)?)\s*\)/);
+    const worldBoundsMatch = platformerSource.match(/this\.physics\.world\.setBounds\(0,\s*0,\s*(\d+(?:\.\d+)?),\s*640\)/);
+    const cameraBoundsMatch = platformerSource.match(/this\.cameras\.main\.setBounds\(0,\s*0,\s*(\d+(?:\.\d+)?),\s*640\)/);
 
     if (!viewportMatch || !gravityMatch || !jumpMatch || !worldBoundsMatch || !cameraBoundsMatch) {
         fail("03-platformer-physics: не удалось проверить параметры viewport, гравитации, прыжка и камеры");

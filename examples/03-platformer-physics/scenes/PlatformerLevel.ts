@@ -47,10 +47,10 @@ class PlatformerLevel extends Phaser.Scene {
         this.coinC = this.add.ellipse(790, 242, 24, 24, 0xffd166, 1);
         // levelTitle
         this.levelTitle = this.add.text(28, 28, "PLATFORMER / ARCADE PHYSICS", { fontFamily: "Arial", fontSize: "22px", fontStyle: "bold", color: "#f4f7ff", align: "left" });
-        levelTitle.setOrigin(0, 0.5);
+        this.levelTitle.setOrigin(0, 0.5);
         // controlsHint
         this.controlsHint = this.add.text(28, 58, "← → движение · Space прыжок · 3 жетона · камера следует за героем", { fontFamily: "Arial", fontSize: "14px", fontStyle: "normal", color: "#91a4c2", align: "left" });
-        controlsHint.setOrigin(0, 0.5);
+        this.controlsHint.setOrigin(0, 0.5);
         // scoreText
         const scoreText = this.add.text(915, 35, "Жетоны: 0 / 3", { fontFamily: "Arial", fontSize: "16px", fontStyle: "bold", color: "#ffdf91", align: "right" });
         scoreText.setOrigin(1, 0.5);
