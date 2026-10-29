@@ -59,7 +59,7 @@ class AnimationTweenLab extends Phaser.Scene {
                     yoyo: true, repeat: -1, ease: "Sine.inOut"
                 });
                 this.tweens.add({
-                    targets: this.orbB, scale: 1.65, duration: 900,
+                    targets: this.orbB, scaleX: 1.65, scaleY: 1.65, duration: 900,
                     yoyo: true, repeat: -1, ease: "Back.out"
                 });
                 this.tweens.add({

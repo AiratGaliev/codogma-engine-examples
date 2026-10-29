@@ -60,9 +60,11 @@ class PlatformerLevel extends Phaser.Scene {
         // scoreText
         const scoreText = this.add.text(915, 35, "Жетоны: 0 / 3", { fontFamily: "Arial", fontSize: "16px", fontStyle: "bold", color: "#ffdf91", align: "right" });
         scoreText.setOrigin(1, 0.5);
+        this.scoreText = scoreText;
         // resultText
         const resultText = this.add.text(480, 190, "", { fontFamily: "Arial", fontSize: "21px", fontStyle: "bold", color: "#f4f7ff", align: "center" });
         resultText.setOrigin(0.5, 0.5);
+        this.resultText = resultText;
 
         this.events.emit("scene-awake");
     }
