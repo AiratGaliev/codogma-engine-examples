@@ -87,7 +87,10 @@
       "x": 180,
       "y": 296,
       "tone": "cyan",
-      "scope": "CLASS"
+      "scope": "CLASS",
+      "unlock": [
+        "tone"
+      ]
     },
     {
       "prefabId": "00000000-0000-4000-8000-000200000000",
@@ -97,7 +100,10 @@
       "x": 480,
       "y": 296,
       "tone": "violet",
-      "scope": "CLASS"
+      "scope": "CLASS",
+      "unlock": [
+        "tone"
+      ]
     },
     {
       "prefabId": "00000000-0000-4000-8000-000200000000",
@@ -107,7 +113,10 @@
       "x": 780,
       "y": 296,
       "tone": "amber",
-      "scope": "CLASS"
+      "scope": "CLASS",
+      "unlock": [
+        "tone"
+      ]
     },
     {
       "type": "Text",

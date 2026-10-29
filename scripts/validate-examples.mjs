@@ -80,11 +80,28 @@ for (const project of projects) {
         }
     }
 
-    const prefabIds = new Set(documents.filter(({ scene }) => scene.sceneType === "PREFAB").map(({ scene }) => scene.id));
+    const prefabs = new Map(documents
+        .filter(({ scene }) => scene.sceneType === "PREFAB")
+        .map(({ scene }) => [scene.id, scene]));
     for (const { name, scene } of documents) {
         for (const object of scene.displayList ?? []) {
-            if (object.prefabId && !prefabIds.has(object.prefabId)) {
+            if (!object.prefabId) continue;
+            const prefab = prefabs.get(object.prefabId);
+            if (!prefab) {
                 fail(`${project}/${name}: prefabId объекта ${object.label} не указывает на Prefab этого проекта`);
+                continue;
+            }
+            const unlocked = new Set(object.unlock ?? []);
+            const exposedProperties = (prefab.prefabProperties ?? []).map((property) => property.name);
+            for (const property of exposedProperties) {
+                if (object[property] !== undefined && !unlocked.has(property)) {
+                    fail(`${project}/${name}: поле Prefab ${property} задано у ${object.label}, но отсутствует в unlock`);
+                }
+            }
+            for (const property of unlocked) {
+                if (!exposedProperties.includes(property)) {
+                    fail(`${project}/${name}: unlock ${property} у ${object.label} не объявлен в prefabProperties`);
+                }
             }
         }
     }
