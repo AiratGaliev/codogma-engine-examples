@@ -1,0 +1,20 @@
+# Источники и связь с Phaser Examples
+
+**Источник для отбора:** [phaserjs/examples](https://github.com/phaserjs/examples), ветка master на момент подготовки первой подборки, каталог public/src (Phaser 4).
+
+В оригинальном репозитории обнаружены преимущественно кодовые примеры, а не проекты с файлами Codogma .scene. Поэтому эта коллекция не переносит их как готовые editor-проекты: она повторно реализует ограниченные сценарии, помещая композицию в редактируемые сцены Codogma. Все игровые объекты и стили первой волны созданы из встроенных фигур и текста Phaser; сторонние изображения, шрифты и звуки не копируются.
+
+| Проект Codogma | Официальные примеры Phaser, использованные как технические ориентиры | Что адаптировано под редактор |
+|---|---|---|
+| [01 — Scene Composition](examples/01-scene-composition/) | [Rectangle shape](https://github.com/phaserjs/examples/blob/master/public/src/game%20objects/shapes/rectangle.js), [Ellipse shape](https://github.com/phaserjs/examples/blob/master/public/src/game%20objects/shapes/ellipse.js) | Композиция, именованные объекты, текст и координаты сохранены в файле сцены; код содержит только поведение. |
+| [02 — Reusable Prefabs](examples/02-reusable-prefabs/) | [Nested Container Prefab fixture in Codogma](https://github.com/AiratGaliev/codogma-engine/blob/dev/tests/workspace/test-typescript/scenes/DoubleDinoPrefab.scene) и [scene fixture with Prefab instances](https://github.com/AiratGaliev/codogma-engine/blob/dev/tests/workspace/test-typescript/scenes/Level.scene) | Это editor-specific пример Codogma: один корневой Container, вложенный list, prefabProperties, unlock и три экземпляра. Он не выдаётся за нативную функцию Phaser. |
+| [03 — Platformer Physics](examples/03-platformer-physics/) | [Basic Arcade platform](https://github.com/phaserjs/examples/blob/master/public/src/physics/arcade/basic%20platform.js), [Body controls](https://github.com/phaserjs/examples/blob/master/public/src/physics/arcade/body%20controls.js) | Геометрия уровня редактируется в сцене, а Arcade Physics и ввод связываются в TypeScript. |
+| [04 — Animation & Tweens](examples/04-animation-tweens/) | [Multiple properties with yoyo](https://github.com/phaserjs/examples/blob/master/public/src/tweens/multiple%20properties%20yoyo.js), [Sine easing](https://github.com/phaserjs/examples/blob/master/public/src/tweens/eases/sine.js), [Camera shake](https://github.com/phaserjs/examples/blob/master/public/src/camera/shake.js) | Именованные объекты сцены управляются Tween; настройки повторения, easing и визуальная обратная связь остаются пользовательским кодом. |
+| [05 — Input Interaction Lab](examples/05-input-interaction-lab/) | [Enable dragging](https://github.com/phaserjs/examples/blob/master/public/src/input/dragging/enable%20for%20drag.js), [Snap to grid on drag](https://github.com/phaserjs/examples/blob/master/public/src/input/dragging/snap%20to%20grid%20on%20drag.js), [Bring dragged item to top](https://github.com/phaserjs/examples/blob/master/public/src/input/dragging/bring%20dragged%20item%20to%20top.js) | Карточки и целевые слоты создаются через Scene Editor; TypeScript реализует drag/drop, snap и отмену неудачного drop. |
+| [06 — Multi-Scene Game](examples/06-multi-scene-game/) | [Changing scene](https://github.com/phaserjs/examples/blob/master/public/src/scenes/changing%20scene.js), [Launch parallel scene](https://github.com/phaserjs/examples/blob/master/public/src/scenes/launch%20parallel%20scene.js) | Меню, уровень и экран результата — независимые редакторские сцены с передачей данных. |
+
+## Версия и лицензирование
+
+- Каждый runtime-preview фиксирует Phaser **4.2.1**; примеры не предполагают совместимость с Phaser 3.
+- Код из phaserjs/examples указан как справочный источник, но не копируется в этой подборке. Официальный README подчёркивает, что MIT-лицензия репозитория не распространяется автоматически на содержащиеся в нём ассеты: [README и лицензирование](https://github.com/phaserjs/examples/blob/master/README.md).
+- Codogma-сцены и их TypeScript-сопровождение всё равно требуют ручной проверки в актуальной версии редактора.

@@ -15,6 +15,18 @@ function fail(message) {
     errors.push(message);
 }
 
+function visitObjects(objects, visitor, context) {
+    if (!Array.isArray(objects)) return;
+    for (const object of objects) {
+        visitor(object, context);
+        if (object.list !== undefined && !Array.isArray(object.list)) {
+            fail(`${context}: вложенный список объекта ${object.label ?? "(без label)"} должен быть массивом`);
+            continue;
+        }
+        if (Array.isArray(object.list)) visitObjects(object.list, visitor, context);
+    }
+}
+
 async function exists(file) {
     try {
         await access(file);
@@ -46,6 +58,7 @@ for (const project of projects) {
     if (sceneFiles.length === 0) fail(`${project}: отсутствуют редактируемые файлы .scene`);
 
     const documents = [];
+    const sceneIds = new Set();
     for (const name of sceneFiles) {
         let scene;
         try {
@@ -56,28 +69,44 @@ for (const project of projects) {
         }
         documents.push({ name, scene });
 
-        if (!["SCENE", "PREFAB"].includes(scene.sceneType)) fail(`${project}/${name}: неверный sceneType`);
-        if (scene.sceneType === "SCENE" && !scene.settings?.sceneKey) fail(`${project}/${name}: у SCENE отсутствует settings.sceneKey`);
-        if (!Array.isArray(scene.displayList)) fail(`${project}/${name}: displayList не является массивом`);
+        if (typeof scene.id !== "string" || !scene.id) {
+            fail(`${project}/scenes/${name}: отсутствует ID документа`);
+        } else if (sceneIds.has(scene.id)) {
+            fail(`${project}/scenes/${name}: повторяется ID документа ${scene.id}`);
+        } else {
+            sceneIds.add(scene.id);
+        }
+
+        if (!["SCENE", "PREFAB"].includes(scene.sceneType)) fail(`${project}/scenes/${name}: неверный sceneType`);
+        if (scene.sceneType === "SCENE" && !scene.settings?.sceneKey) {
+            fail(`${project}/scenes/${name}: у SCENE отсутствует settings.sceneKey`);
+        }
+        if (!Array.isArray(scene.displayList)) fail(`${project}/scenes/${name}: displayList не является массивом`);
         if (scene.sceneType === "PREFAB" && scene.displayList?.length !== 1) {
-            fail(`${project}/${name}: Prefab должен иметь ровно один корневой объект`);
+            fail(`${project}/scenes/${name}: Prefab должен иметь ровно один корневой объект`);
         }
         if (scene.meta?.contentType !== "phasereditor2d.core.scene.SceneContentType") {
-            fail(`${project}/${name}: неверный contentType метаданных сцены`);
+            fail(`${project}/scenes/${name}: неверный contentType метаданных`);
         }
-        const ids = new Set();
-        for (const object of scene.displayList ?? []) {
-            if (typeof object.id !== "string" || !object.id) fail(`${project}/${name}: объект ${object.label ?? "(без label)"} не имеет id`);
-            else if (ids.has(object.id)) fail(`${project}/${name}: повторяется id ${object.id}`);
-            else ids.add(object.id);
-            if (!object.label) fail(`${project}/${name}: объект без label`);
+
+        const objectIds = new Set();
+        visitObjects(scene.displayList, (object) => {
+            if (typeof object.id !== "string" || !object.id) {
+                fail(`${project}/scenes/${name}: объект ${object.label ?? "(без label)"} не имеет ID`);
+            } else if (objectIds.has(object.id)) {
+                fail(`${project}/scenes/${name}: повторяется ID объекта ${object.id}`);
+            } else {
+                objectIds.add(object.id);
+            }
+            if (!object.label) fail(`${project}/scenes/${name}: объект без label`);
             if (object.type === "Text" && typeof object.text !== "string") {
-                fail(`${project}/${name}: текстовый объект ${object.label} не содержит текст`);
+                fail(`${project}/scenes/${name}: текстовый объект ${object.label} не содержит текст`);
             }
             if (object.prefabId && object.scope !== "CLASS") {
-                fail(`${project}/${name}: экземпляр Prefab ${object.label} должен использовать scope=CLASS`);
+                fail(`${project}/scenes/${name}: экземпляр Prefab ${object.label} должен использовать scope=CLASS`);
             }
-        }
+        }, `${project}/scenes/${name}`);
+
         if (!(await exists(path.join(scenesDir, name.replace(/\.scene$/, ".ts"))))) {
             fail(`${project}/scenes/${name}: отсутствует соседний TypeScript-файл`);
         }
@@ -87,26 +116,26 @@ for (const project of projects) {
         .filter(({ scene }) => scene.sceneType === "PREFAB")
         .map(({ scene }) => [scene.id, scene]));
     for (const { name, scene } of documents) {
-        for (const object of scene.displayList ?? []) {
-            if (!object.prefabId) continue;
+        visitObjects(scene.displayList, (object) => {
+            if (!object.prefabId) return;
             const prefab = prefabs.get(object.prefabId);
             if (!prefab) {
-                fail(`${project}/${name}: prefabId объекта ${object.label} не указывает на Prefab этого проекта`);
-                continue;
+                fail(`${project}/scenes/${name}: prefabId объекта ${object.label} не указывает на Prefab этого проекта`);
+                return;
             }
             const unlocked = new Set(object.unlock ?? []);
             const exposedProperties = (prefab.prefabProperties ?? []).map((property) => property.name);
             for (const property of exposedProperties) {
                 if (object[property] !== undefined && !unlocked.has(property)) {
-                    fail(`${project}/${name}: поле Prefab ${property} задано у ${object.label}, но отсутствует в unlock`);
+                    fail(`${project}/scenes/${name}: поле Prefab ${property} задано у ${object.label}, но отсутствует в unlock`);
                 }
             }
             for (const property of unlocked) {
                 if (!exposedProperties.includes(property)) {
-                    fail(`${project}/${name}: unlock ${property} у ${object.label} не объявлен в prefabProperties`);
+                    fail(`${project}/scenes/${name}: unlock ${property} у ${object.label} не объявлен в prefabProperties`);
                 }
             }
-        }
+        }, `${project}/scenes/${name}`);
     }
 }
 
@@ -115,5 +144,5 @@ if (errors.length) {
     for (const error of errors) console.error(`- ${error}`);
     process.exitCode = 1;
 } else {
-    console.log(`Проверено проектов: ${projects.length}. Формат сцен, метаданные, идентификаторы и ссылки Prefab согласованы.`);
+    console.log(`Проверено проектов: ${projects.length}. JSON-сцены, вложенные ID, метаданные и Prefab-ссылки согласованы.`);
 }

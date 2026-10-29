@@ -26,7 +26,7 @@ npm run build
 
 ## Каталог
 
-Полная таблица сценариев, покрываемых возможностей и известных ограничений: [CATALOG.md](CATALOG.md).
+Полная таблица сценариев, покрываемых возможностей и известных ограничений: [CATALOG.md](CATALOG.md).\n\nСвязь с оригинальными Phaser-примерами и лицензирование: [SOURCE-REFERENCES.md](SOURCE-REFERENCES.md).
 
 ## Работа с редактором
 
@@ -38,7 +38,7 @@ npm run build
 
 ## Источники
 
-Подборка ориентируется на разделы официальной библиотеки [phaserjs/examples](https://github.com/phaserjs/examples): [Scenes](https://github.com/phaserjs/examples/tree/master/public/src/scenes), [Arcade Physics](https://github.com/phaserjs/examples/tree/master/public/src/physics/arcade), [Tweens](https://github.com/phaserjs/examples/tree/master/public/src/tweens) и [Input / Dragging](https://github.com/phaserjs/examples/tree/master/public/src/input/dragging). Код проектов в этой коллекции написан заново; это не прямое копирование примеров или их ассетов.
+Для каждого проекта выбраны конкретные официальные ориентиры; соответствие и лицензирование описаны в [SOURCE-REFERENCES.md](SOURCE-REFERENCES.md). Код проектов в этой коллекции написан заново; это не прямое копирование примеров или их ассетов.
 
 ## Текущие границы
 
