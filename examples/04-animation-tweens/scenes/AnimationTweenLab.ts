@@ -1,12 +1,15 @@
 // Сцена хранит композицию в .scene; поведение остаётся в пользовательском коде.
 
+/* START OF COMPILED CODE */
+
 class AnimationTweenLab extends Phaser.Scene {
-    private orbA!: Phaser.GameObjects.Ellipse;
-    private orbB!: Phaser.GameObjects.Ellipse;
-    private blockC!: Phaser.GameObjects.Rectangle;
+
 
     constructor() {
         super("AnimationTweenLab");
+
+        /* START-USER-CTR-CODE */
+        /* END-USER-CTR-CODE */
     }
 
     editorCreate(): void {
@@ -52,6 +55,12 @@ class AnimationTweenLab extends Phaser.Scene {
         this.events.emit("scene-awake");
     }
 
+    private orbA!: Phaser.GameObjects.Ellipse;
+    private orbB!: Phaser.GameObjects.Ellipse;
+    private blockC!: Phaser.GameObjects.Rectangle;
+
+    /* START-USER-CODE */
+
     create(): void {
         this.editorCreate();
         this.tweens.add({
@@ -71,4 +80,10 @@ class AnimationTweenLab extends Phaser.Scene {
                     object.on("pointerdown", () => this.cameras.main.shake(160, 0.003));
                 }
     }
+
+    /* END-USER-CODE */
 }
+
+/* END OF COMPILED CODE */
+
+// You can write more code here

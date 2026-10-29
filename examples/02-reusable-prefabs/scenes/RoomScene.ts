@@ -1,13 +1,15 @@
 // Сцена хранит композицию в .scene; поведение остаётся в пользовательском коде.
 
+/* START OF COMPILED CODE */
+
 class RoomScene extends Phaser.Scene {
-    private portalA!: PortalPrefab;
-    private portalB!: PortalPrefab;
-    private portalC!: PortalPrefab;
-    private statusText!: Phaser.GameObjects.Text;
+
 
     constructor() {
         super("RoomScene");
+
+        /* START-USER-CTR-CODE */
+        /* END-USER-CTR-CODE */
     }
 
     editorCreate(): void {
@@ -56,6 +58,13 @@ class RoomScene extends Phaser.Scene {
         this.events.emit("scene-awake");
     }
 
+    private portalA!: PortalPrefab;
+    private portalB!: PortalPrefab;
+    private portalC!: PortalPrefab;
+    private statusText!: Phaser.GameObjects.Text;
+
+    /* START-USER-CODE */
+
     create(): void {
         this.editorCreate();
         const portals = [this.portalA, this.portalB, this.portalC];
@@ -68,4 +77,10 @@ class RoomScene extends Phaser.Scene {
                     });
                 });
     }
+
+    /* END-USER-CODE */
 }
+
+/* END OF COMPILED CODE */
+
+// You can write more code here

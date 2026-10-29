@@ -1,19 +1,15 @@
 // Сцена хранит композицию в .scene; поведение остаётся в пользовательском коде.
 
+/* START OF COMPILED CODE */
+
 class InteractionLab extends Phaser.Scene {
-    private slotA!: Phaser.GameObjects.Rectangle;
-    private slotB!: Phaser.GameObjects.Rectangle;
-    private slotC!: Phaser.GameObjects.Rectangle;
-    private cardAmber!: Phaser.GameObjects.Rectangle;
-    private cardViolet!: Phaser.GameObjects.Rectangle;
-    private cardCyan!: Phaser.GameObjects.Rectangle;
-    private cardAmberLabel!: Phaser.GameObjects.Text;
-    private cardVioletLabel!: Phaser.GameObjects.Text;
-    private cardCyanLabel!: Phaser.GameObjects.Text;
-    private statusText!: Phaser.GameObjects.Text;
+
 
     constructor() {
         super("InteractionLab");
+
+        /* START-USER-CTR-CODE */
+        /* END-USER-CTR-CODE */
     }
 
     editorCreate(): void {
@@ -69,6 +65,19 @@ class InteractionLab extends Phaser.Scene {
         this.events.emit("scene-awake");
     }
 
+    private slotA!: Phaser.GameObjects.Rectangle;
+    private slotB!: Phaser.GameObjects.Rectangle;
+    private slotC!: Phaser.GameObjects.Rectangle;
+    private cardAmber!: Phaser.GameObjects.Rectangle;
+    private cardViolet!: Phaser.GameObjects.Rectangle;
+    private cardCyan!: Phaser.GameObjects.Rectangle;
+    private cardAmberLabel!: Phaser.GameObjects.Text;
+    private cardVioletLabel!: Phaser.GameObjects.Text;
+    private cardCyanLabel!: Phaser.GameObjects.Text;
+    private statusText!: Phaser.GameObjects.Text;
+
+    /* START-USER-CODE */
+
     create(): void {
         this.editorCreate();
         const cards = [
@@ -113,4 +122,10 @@ class InteractionLab extends Phaser.Scene {
                     card.setDepth(0);
                 });
     }
+
+    /* END-USER-CODE */
 }
+
+/* END OF COMPILED CODE */
+
+// You can write more code here

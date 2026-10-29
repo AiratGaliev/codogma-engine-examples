@@ -1,13 +1,15 @@
 // Сцена хранит композицию в .scene; поведение остаётся в пользовательском коде.
 
+/* START OF COMPILED CODE */
+
 class LevelScene extends Phaser.Scene {
-    private targetA!: Phaser.GameObjects.Ellipse;
-    private targetB!: Phaser.GameObjects.Ellipse;
-    private targetC!: Phaser.GameObjects.Ellipse;
-    private scoreText!: Phaser.GameObjects.Text;
+
 
     constructor() {
         super("LevelScene");
+
+        /* START-USER-CTR-CODE */
+        /* END-USER-CTR-CODE */
     }
 
     editorCreate(): void {
@@ -44,6 +46,13 @@ class LevelScene extends Phaser.Scene {
         this.events.emit("scene-awake");
     }
 
+    private targetA!: Phaser.GameObjects.Ellipse;
+    private targetB!: Phaser.GameObjects.Ellipse;
+    private targetC!: Phaser.GameObjects.Ellipse;
+    private scoreText!: Phaser.GameObjects.Text;
+
+    /* START-USER-CODE */
+
     create(): void {
         this.editorCreate();
         const targets = [this.targetA, this.targetB, this.targetC];
@@ -61,4 +70,10 @@ class LevelScene extends Phaser.Scene {
                     });
                 });
     }
+
+    /* END-USER-CODE */
 }
+
+/* END OF COMPILED CODE */
+
+// You can write more code here

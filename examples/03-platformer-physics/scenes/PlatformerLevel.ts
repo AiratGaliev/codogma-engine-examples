@@ -1,21 +1,15 @@
 // Сцена хранит композицию в .scene; поведение остаётся в пользовательском коде.
 
+/* START OF COMPILED CODE */
+
 class PlatformerLevel extends Phaser.Scene {
-    private ground!: Phaser.GameObjects.Rectangle;
-    private platformA!: Phaser.GameObjects.Rectangle;
-    private platformB!: Phaser.GameObjects.Rectangle;
-    private platformC!: Phaser.GameObjects.Rectangle;
-    private player!: Phaser.GameObjects.Rectangle;
-    private coinA!: Phaser.GameObjects.Ellipse;
-    private coinB!: Phaser.GameObjects.Ellipse;
-    private coinC!: Phaser.GameObjects.Ellipse;
-    private scoreText!: Phaser.GameObjects.Text;
-    private resultText!: Phaser.GameObjects.Text;
-    private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-    private jumpKey!: Phaser.Input.Keyboard.Key;
+
 
     constructor() {
         super("PlatformerLevel");
+
+        /* START-USER-CTR-CODE */
+        /* END-USER-CTR-CODE */
     }
 
     editorCreate(): void {
@@ -69,6 +63,21 @@ class PlatformerLevel extends Phaser.Scene {
         this.events.emit("scene-awake");
     }
 
+    private ground!: Phaser.GameObjects.Rectangle;
+    private platformA!: Phaser.GameObjects.Rectangle;
+    private platformB!: Phaser.GameObjects.Rectangle;
+    private platformC!: Phaser.GameObjects.Rectangle;
+    private player!: Phaser.GameObjects.Rectangle;
+    private coinA!: Phaser.GameObjects.Ellipse;
+    private coinB!: Phaser.GameObjects.Ellipse;
+    private coinC!: Phaser.GameObjects.Ellipse;
+    private scoreText!: Phaser.GameObjects.Text;
+    private resultText!: Phaser.GameObjects.Text;
+
+    /* START-USER-CODE */
+    private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+    private jumpKey!: Phaser.Input.Keyboard.Key;
+
     
     private collected = 0;
     
@@ -119,4 +128,10 @@ class PlatformerLevel extends Phaser.Scene {
                     body.setVelocityY(-470);
                 }
     }
+
+    /* END-USER-CODE */
 }
+
+/* END OF COMPILED CODE */
+
+// You can write more code here

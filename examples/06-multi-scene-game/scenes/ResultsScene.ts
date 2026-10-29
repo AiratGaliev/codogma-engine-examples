@@ -1,12 +1,15 @@
 // Сцена хранит композицию в .scene; поведение остаётся в пользовательском коде.
 
+/* START OF COMPILED CODE */
+
 class ResultsScene extends Phaser.Scene {
-    private scoreResult!: Phaser.GameObjects.Text;
-    private restartButton!: Phaser.GameObjects.Rectangle;
-    private finalScore = 0;
+
 
     constructor() {
         super("ResultsScene");
+
+        /* START-USER-CTR-CODE */
+        /* END-USER-CTR-CODE */
     }
 
     editorCreate(): void {
@@ -35,6 +38,12 @@ class ResultsScene extends Phaser.Scene {
         this.events.emit("scene-awake");
     }
 
+    private scoreResult!: Phaser.GameObjects.Text;
+    private restartButton!: Phaser.GameObjects.Rectangle;
+
+    /* START-USER-CODE */
+    private finalScore = 0;
+
     init(data: { score?: number }): void {
             this.finalScore = data.score ?? 0;
         }
@@ -47,4 +56,10 @@ class ResultsScene extends Phaser.Scene {
                 this.restartButton.on("pointerout", () => this.restartButton.setFillStyle(0xffbd69));
                 this.restartButton.on("pointerdown", () => this.scene.start("MenuScene"));
     }
+
+    /* END-USER-CODE */
 }
+
+/* END OF COMPILED CODE */
+
+// You can write more code here

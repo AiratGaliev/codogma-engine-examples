@@ -1,12 +1,15 @@
 // Сцена хранит композицию в .scene; поведение остаётся в пользовательском коде.
 
+/* START OF COMPILED CODE */
+
 class CompositionScene extends Phaser.Scene {
-    private mainOrb!: Phaser.GameObjects.Ellipse;
-    private smallCard!: Phaser.GameObjects.Rectangle;
 
 
     constructor() {
         super("CompositionScene");
+
+        /* START-USER-CTR-CODE */
+        /* END-USER-CTR-CODE */
     }
 
     editorCreate(): void {
@@ -71,6 +74,11 @@ class CompositionScene extends Phaser.Scene {
         this.events.emit("scene-awake");
     }
 
+    private mainOrb!: Phaser.GameObjects.Ellipse;
+    private smallCard!: Phaser.GameObjects.Rectangle;
+
+    /* START-USER-CODE */
+
     create(): void {
         this.editorCreate();
         this.mainOrb.setInteractive({ useHandCursor: true });
@@ -83,4 +91,10 @@ class CompositionScene extends Phaser.Scene {
                     this.smallCard.setAngle(this.smallCard.angle + 45);
                 });
     }
+
+    /* END-USER-CODE */
 }
+
+/* END OF COMPILED CODE */
+
+// You can write more code here

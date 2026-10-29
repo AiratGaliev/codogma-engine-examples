@@ -1,11 +1,8 @@
-// Содержимое Prefab описано в PortalPrefab.scene; здесь находится пользовательское поведение.
+// Содержимое Prefab описано в PortalPrefab.scene; пользовательская логика находится в защищённой секции.
+
+/* START OF COMPILED CODE */
 
 class PortalPrefab extends Phaser.GameObjects.Container {
-    private portalBody!: Phaser.GameObjects.Rectangle;
-    private portalTop!: Phaser.GameObjects.Rectangle;
-    private portalCore!: Phaser.GameObjects.Ellipse;
-    private portalCaption!: Phaser.GameObjects.Text;
-    private _tone = "cyan";
 
     constructor(scene: Phaser.Scene, x?: number, y?: number) {
         super(scene, x ?? 0, y ?? 0);
@@ -34,18 +31,24 @@ class PortalPrefab extends Phaser.GameObjects.Container {
         this.add(this.portalCaption);
 
         /* START-USER-CTR-CODE */
-        // Пользовательский код конструктора.
         /* END-USER-CTR-CODE */
 
         // custom definition props
         this.tone = "cyan";
     }
 
+    private portalBody!: Phaser.GameObjects.Rectangle;
+    private portalTop!: Phaser.GameObjects.Rectangle;
+    private portalCore!: Phaser.GameObjects.Ellipse;
+    private portalCaption!: Phaser.GameObjects.Text;
+
+    /* START-USER-CODE */
+
+    private _tone = "cyan";
+
     get tone(): string {
         return this._tone;
     }
-
-    /* START-USER-CODE */
 
     set tone(value: string) {
         this._tone = value;
@@ -61,3 +64,7 @@ class PortalPrefab extends Phaser.GameObjects.Container {
 
     /* END-USER-CODE */
 }
+
+/* END OF COMPILED CODE */
+
+// You can write more code here

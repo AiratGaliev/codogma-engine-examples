@@ -1,10 +1,15 @@
 // Сцена хранит композицию в .scene; поведение остаётся в пользовательском коде.
 
+/* START OF COMPILED CODE */
+
 class MenuScene extends Phaser.Scene {
-    private startButton!: Phaser.GameObjects.Rectangle;
+
 
     constructor() {
         super("MenuScene");
+
+        /* START-USER-CTR-CODE */
+        /* END-USER-CTR-CODE */
     }
 
     editorCreate(): void {
@@ -32,6 +37,10 @@ class MenuScene extends Phaser.Scene {
         this.events.emit("scene-awake");
     }
 
+    private startButton!: Phaser.GameObjects.Rectangle;
+
+    /* START-USER-CODE */
+
     create(): void {
         this.editorCreate();
         this.startButton.setInteractive({ useHandCursor: true });
@@ -39,4 +48,10 @@ class MenuScene extends Phaser.Scene {
                 this.startButton.on("pointerout", () => this.startButton.setFillStyle(0x34d6cb));
                 this.startButton.on("pointerdown", () => this.scene.start("LevelScene"));
     }
+
+    /* END-USER-CODE */
 }
+
+/* END OF COMPILED CODE */
+
+// You can write more code here

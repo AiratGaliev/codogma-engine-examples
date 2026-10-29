@@ -89,6 +89,11 @@ for (const project of projects) {
             fail(`${project}/scenes/${name}: неверный contentType метаданных`);
         }
 
+        const tsPath = path.join(scenesDir, name.replace(/\.scene$/, ".ts"));
+        const hasTs = await exists(tsPath);
+        if (!hasTs) fail(`${project}/scenes/${name}: отсутствует соседний TypeScript-файл`);
+        const tsSource = hasTs ? await readFile(tsPath, "utf8") : "";
+
         const objectIds = new Set();
         visitObjects(scene.displayList, (object) => {
             if (typeof object.id !== "string" || !object.id) {
@@ -105,11 +110,15 @@ for (const project of projects) {
             if (object.prefabId && object.scope !== "CLASS") {
                 fail(`${project}/scenes/${name}: экземпляр Prefab ${object.label} должен использовать scope=CLASS`);
             }
+            if (object.scope === "CLASS" && /^[A-Za-z_$][\w$]*$/.test(object.label ?? "")) {
+                const label = object.label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+                const fieldPattern = new RegExp(`\\b(?:private|public|protected)\\s+${label}!?(?:\\s*\\?)?\\s*:`);
+                if (!fieldPattern.test(tsSource)) {
+                    fail(`${project}/scenes/${name}: scope=CLASS у ${object.label}, но типизированное поле не найдено в TypeScript`);
+                }
+            }
         }, `${project}/scenes/${name}`);
 
-        if (!(await exists(path.join(scenesDir, name.replace(/\.scene$/, ".ts"))))) {
-            fail(`${project}/scenes/${name}: отсутствует соседний TypeScript-файл`);
-        }
     }
 
     const prefabs = new Map(documents
