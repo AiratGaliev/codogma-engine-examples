@@ -4,9 +4,6 @@ class AnimationTweenLab extends Phaser.Scene {
     private orbA!: Phaser.GameObjects.Ellipse;
     private orbB!: Phaser.GameObjects.Ellipse;
     private blockC!: Phaser.GameObjects.Rectangle;
-    private orbA!: Phaser.GameObjects.Ellipse;
-    private orbB!: Phaser.GameObjects.Ellipse;
-    private blockC!: Phaser.GameObjects.Rectangle;
 
     constructor() {
         super("AnimationTweenLab");

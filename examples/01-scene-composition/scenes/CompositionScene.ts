@@ -1,6 +1,8 @@
 // Сцена хранит композицию в .scene; поведение остаётся в пользовательском коде.
 
 class CompositionScene extends Phaser.Scene {
+    private mainOrb!: Phaser.GameObjects.Ellipse;
+    private smallCard!: Phaser.GameObjects.Rectangle;
 
 
     constructor() {
@@ -28,11 +30,11 @@ class CompositionScene extends Phaser.Scene {
         const panelTitle = this.add.text(108, 190, "ОБЪЕКТЫ СЦЕНЫ", { fontFamily: "Arial", fontSize: "17px", fontStyle: "bold", color: "#e8efff", align: "left" });
         panelTitle.setOrigin(0, 0.5);
         // mainOrb
-        const mainOrb = this.add.ellipse(235, 278, 128, 128, 0x34d6cb, 1);
+        this.mainOrb = this.add.ellipse(235, 278, 128, 128, 0x34d6cb, 1);
         // orbCore
         const orbCore = this.add.ellipse(235, 278, 54, 54, 0x0b1020, 1);
         // smallCard
-        const smallCard = this.add.rectangle(382, 260, 72, 72, 0x8b7cff, 1);
+        this.smallCard = this.add.rectangle(382, 260, 72, 72, 0x8b7cff, 1);
         // wideCard
         const wideCard = this.add.rectangle(354, 362, 128, 24, 0xffbd69, 1);
         // smallOrbA

@@ -10,15 +10,6 @@ class InteractionLab extends Phaser.Scene {
     private cardAmberLabel!: Phaser.GameObjects.Text;
     private cardVioletLabel!: Phaser.GameObjects.Text;
     private cardCyanLabel!: Phaser.GameObjects.Text;
-    private slotA!: Phaser.GameObjects.Rectangle;
-    private slotB!: Phaser.GameObjects.Rectangle;
-    private slotC!: Phaser.GameObjects.Rectangle;
-    private cardAmber!: Phaser.GameObjects.Rectangle;
-    private cardViolet!: Phaser.GameObjects.Rectangle;
-    private cardCyan!: Phaser.GameObjects.Rectangle;
-    private cardAmberLabel!: Phaser.GameObjects.Text;
-    private cardVioletLabel!: Phaser.GameObjects.Text;
-    private cardCyanLabel!: Phaser.GameObjects.Text;
     private statusText!: Phaser.GameObjects.Text;
 
     constructor() {
@@ -72,7 +63,7 @@ class InteractionLab extends Phaser.Scene {
         cardCyanLabel.setOrigin(0.5, 0.5);
         this.cardCyanLabel = cardCyanLabel;
         // statusText
-        const statusText = this.add.text(480, 582, "Перетащите карточку к целевому слоту", { fontFamily: "Arial", fontSize: "16px", fontStyle: "normal", color: "#d5e1f3", align: "center" });
+        const statusText = this.statusText = this.add.text(480, 582, "Перетащите карточку к целевому слоту", { fontFamily: "Arial", fontSize: "16px", fontStyle: "normal", color: "#d5e1f3", align: "center" });
         statusText.setOrigin(0.5, 0.5);
 
         this.events.emit("scene-awake");

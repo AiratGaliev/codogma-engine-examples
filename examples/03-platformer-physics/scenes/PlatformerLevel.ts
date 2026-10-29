@@ -9,14 +9,6 @@ class PlatformerLevel extends Phaser.Scene {
     private coinA!: Phaser.GameObjects.Ellipse;
     private coinB!: Phaser.GameObjects.Ellipse;
     private coinC!: Phaser.GameObjects.Ellipse;
-    private ground!: Phaser.GameObjects.Rectangle;
-    private platformA!: Phaser.GameObjects.Rectangle;
-    private platformB!: Phaser.GameObjects.Rectangle;
-    private platformC!: Phaser.GameObjects.Rectangle;
-    private player!: Phaser.GameObjects.Rectangle;
-    private coinA!: Phaser.GameObjects.Ellipse;
-    private coinB!: Phaser.GameObjects.Ellipse;
-    private coinC!: Phaser.GameObjects.Ellipse;
     private scoreText!: Phaser.GameObjects.Text;
     private resultText!: Phaser.GameObjects.Text;
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;

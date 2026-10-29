@@ -2,7 +2,6 @@
 
 class MenuScene extends Phaser.Scene {
     private startButton!: Phaser.GameObjects.Rectangle;
-    private startButton!: Phaser.GameObjects.Rectangle;
 
     constructor() {
         super("MenuScene");

@@ -5,10 +5,6 @@ class LevelScene extends Phaser.Scene {
     private targetB!: Phaser.GameObjects.Ellipse;
     private targetC!: Phaser.GameObjects.Ellipse;
     private scoreText!: Phaser.GameObjects.Text;
-    private targetA!: Phaser.GameObjects.Ellipse;
-    private targetB!: Phaser.GameObjects.Ellipse;
-    private targetC!: Phaser.GameObjects.Ellipse;
-    private scoreText!: Phaser.GameObjects.Text;
 
     constructor() {
         super("LevelScene");

@@ -28,10 +28,9 @@ if (projects.length < 1) fail("В каталоге examples не найдено 
 
 for (const project of projects) {
     const dir = path.join(examplesDir, project);
-    if (!(await exists(path.join(dir, "README.md")))) fail(`${project}: отсутствует README.md`);
-    if (!(await exists(path.join(dir, "index.html")))) fail(`${project}: отсутствует index.html`);
-    if (!(await exists(path.join(dir, "main.ts")))) fail(`${project}: отсутствует main.ts`);
-    if (!(await exists(path.join(dir, "tsconfig.json")))) fail(`${project}: отсутствует tsconfig.json`);
+    for (const name of ["README.md", "index.html", "main.ts", "tsconfig.json"]) {
+        if (!(await exists(path.join(dir, name)))) fail(`${project}: отсутствует ${name}`);
+    }
 
     const readme = await readFile(path.join(dir, "README.md"), "utf8").catch(() => "");
     if (!readme.includes("4.2.1")) fail(`${project}: README должен явно указывать Phaser 4.2.1`);
@@ -46,15 +45,16 @@ for (const project of projects) {
         .sort();
     if (sceneFiles.length === 0) fail(`${project}: отсутствуют редактируемые файлы .scene`);
 
+    const documents = [];
     for (const name of sceneFiles) {
-        const file = path.join(scenesDir, name);
         let scene;
         try {
-            scene = JSON.parse(await readFile(file, "utf8"));
+            scene = JSON.parse(await readFile(path.join(scenesDir, name), "utf8"));
         } catch (error) {
             fail(`${project}/scenes/${name}: неверный JSON (${error.message})`);
             continue;
         }
+        documents.push({ name, scene });
 
         if (!["SCENE", "PREFAB"].includes(scene.sceneType)) fail(`${project}/${name}: неверный sceneType`);
         if (!scene.settings?.sceneKey) fail(`${project}/${name}: отсутствует settings.sceneKey`);
@@ -62,24 +62,31 @@ for (const project of projects) {
         if (scene.meta?.contentType !== "phasereditor2d.core.scene.SceneContentType") {
             fail(`${project}/${name}: неверный contentType метаданных сцены`);
         }
-
         const ids = new Set();
         for (const object of scene.displayList ?? []) {
-            if (typeof object.id !== "string" || !object.id) fail(`${project}/${name}: у объекта ${object.label ?? "(без label)"} нет id`);
+            if (typeof object.id !== "string" || !object.id) fail(`${project}/${name}: объект ${object.label ?? "(без label)"} не имеет id`);
             else if (ids.has(object.id)) fail(`${project}/${name}: повторяется id ${object.id}`);
             else ids.add(object.id);
-
             if (!object.label) fail(`${project}/${name}: объект без label`);
             if (object.type === "Text" && typeof object.text !== "string") {
                 fail(`${project}/${name}: текстовый объект ${object.label} не содержит текст`);
             }
-            if (object.prefabId && typeof object.prefabId !== "string") {
-                fail(`${project}/${name}: prefabId объекта ${object.label} должен быть строкой`);
+            if (object.prefabId && object.scope !== "CLASS") {
+                fail(`${project}/${name}: экземпляр Prefab ${object.label} должен использовать scope=CLASS`);
             }
         }
+        if (!(await exists(path.join(scenesDir, name.replace(/\.scene$/, ".ts"))))) {
+            fail(`${project}/scenes/${name}: отсутствует соседний TypeScript-файл`);
+        }
+    }
 
-        const tsFile = path.join(scenesDir, name.replace(/\.scene$/, ".ts"));
-        if (!(await exists(tsFile))) fail(`${project}/scenes/${name}: отсутствует соседний TypeScript-файл`);
+    const prefabIds = new Set(documents.filter(({ scene }) => scene.sceneType === "PREFAB").map(({ scene }) => scene.id));
+    for (const { name, scene } of documents) {
+        for (const object of scene.displayList ?? []) {
+            if (object.prefabId && !prefabIds.has(object.prefabId)) {
+                fail(`${project}/${name}: prefabId объекта ${object.label} не указывает на Prefab этого проекта`);
+            }
+        }
     }
 }
 
@@ -88,5 +95,5 @@ if (errors.length) {
     for (const error of errors) console.error(`- ${error}`);
     process.exitCode = 1;
 } else {
-    console.log(`Проверено проектов: ${projects.length}. Файлы сцен, метаданные, идентификаторы и структура в порядке.`);
+    console.log(`Проверено проектов: ${projects.length}. Формат сцен, метаданные, идентификаторы и ссылки Prefab согласованы.`);
 }

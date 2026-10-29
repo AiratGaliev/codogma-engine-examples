@@ -50,7 +50,7 @@ class RoomScene extends Phaser.Scene {
         // statusPanel
         const statusPanel = this.add.rectangle(480, 496, 640, 58, 0x142238, 1);
         // statusText
-        const statusText = this.add.text(480, 496, "Нажмите на портал, чтобы изменить его состояние", { fontFamily: "Arial", fontSize: "16px", fontStyle: "normal", color: "#91a4c2", align: "center" });
+        const statusText = this.statusText = this.add.text(480, 496, "Нажмите на портал, чтобы изменить его состояние", { fontFamily: "Arial", fontSize: "16px", fontStyle: "normal", color: "#91a4c2", align: "center" });
         statusText.setOrigin(0.5, 0.5);
 
         this.events.emit("scene-awake");

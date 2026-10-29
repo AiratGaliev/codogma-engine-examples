@@ -3,8 +3,6 @@
 class ResultsScene extends Phaser.Scene {
     private scoreResult!: Phaser.GameObjects.Text;
     private restartButton!: Phaser.GameObjects.Rectangle;
-    private scoreResult!: Phaser.GameObjects.Text;
-    private restartButton!: Phaser.GameObjects.Rectangle;
     private finalScore = 0;
 
     constructor() {
