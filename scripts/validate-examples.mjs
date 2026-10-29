@@ -59,6 +59,9 @@ for (const project of projects) {
         if (!["SCENE", "PREFAB"].includes(scene.sceneType)) fail(`${project}/${name}: неверный sceneType`);
         if (!scene.settings?.sceneKey) fail(`${project}/${name}: отсутствует settings.sceneKey`);
         if (!Array.isArray(scene.displayList)) fail(`${project}/${name}: displayList не является массивом`);
+        if (scene.sceneType === "PREFAB" && scene.displayList?.length !== 1) {
+            fail(`${project}/${name}: Prefab должен иметь ровно один корневой объект`);
+        }
         if (scene.meta?.contentType !== "phasereditor2d.core.scene.SceneContentType") {
             fail(`${project}/${name}: неверный contentType метаданных сцены`);
         }
