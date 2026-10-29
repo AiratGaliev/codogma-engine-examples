@@ -91,7 +91,7 @@
       "label": "Tone",
       "tooltip": "Цвет акцента экземпляра портала",
       "defValue": "cyan",
-      "customDefinition": false,
+      "customDefinition": true,
       "type": {
         "id": "string",
         "isArray": false
