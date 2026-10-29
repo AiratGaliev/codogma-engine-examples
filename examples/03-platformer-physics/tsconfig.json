@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outFile": "game.js",
+    "rootDir": "."
+  },
+  "files": [
+    "main.ts",
+    "scenes/PlatformerLevel.ts"
+  ]
+}

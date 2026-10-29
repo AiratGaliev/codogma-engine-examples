@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+Thumbs.db
+.vscode/
+# JavaScript output generated from TypeScript projects.
+examples/*/game.js
+examples/*/game.js.map

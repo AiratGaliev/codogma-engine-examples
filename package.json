@@ -1,0 +1,17 @@
+{
+  "name": "codogma-engine-examples",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Подборка редактируемых проектов Codogma Engine на Phaser 4.2.1",
+  "license": "MIT",
+  "scripts": {
+    "validate": "node scripts/validate-examples.mjs",
+    "typecheck": "node scripts/run-tsc.mjs --noEmit",
+    "build": "npm run validate && node scripts/run-tsc.mjs",
+    "test": "npm run validate && npm run typecheck"
+  },
+  "devDependencies": {
+    "phaser": "4.2.1",
+    "typescript": "5.9.3"
+  }
+}
