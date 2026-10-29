@@ -80,51 +80,104 @@ class InteractionLab extends Phaser.Scene {
 
     create(): void {
         this.editorCreate();
+
         const cards = [
-                    { card: this.cardAmber, label: this.cardAmberLabel },
-                    { card: this.cardViolet, label: this.cardVioletLabel },
-                    { card: this.cardCyan, label: this.cardCyanLabel }
-                ];
-                const slots = [this.slotA, this.slotB, this.slotC];
-                for (const { card, label } of cards) {
-                    card.setData("homeX", card.x);
-                    card.setData("homeY", card.y);
-                    card.setData("caption", label);
-                    label.setDepth(1);
-                    card.setInteractive({ useHandCursor: true });
-                    this.input.setDraggable(card);
+            { card: this.cardAmber, label: this.cardAmberLabel },
+            { card: this.cardViolet, label: this.cardVioletLabel },
+            { card: this.cardCyan, label: this.cardCyanLabel }
+        ];
+        const slots = [this.slotA, this.slotB, this.slotC];
+        const captions = new Map<Phaser.GameObjects.Rectangle, Phaser.GameObjects.Text>();
+        const slotOccupants = new Map<Phaser.GameObjects.Rectangle, Phaser.GameObjects.Rectangle>();
+        const cardSlots = new Map<Phaser.GameObjects.Rectangle, Phaser.GameObjects.Rectangle>();
+        const dragOrigins = new Map<Phaser.GameObjects.Rectangle, { x: number; y: number }>();
+
+        for (const { card, label } of cards) {
+            captions.set(card, label);
+            label.setDepth(1);
+            card.setInteractive({ useHandCursor: true });
+            this.input.setDraggable(card);
+        }
+
+        const onDragStart = (
+            _pointer: Phaser.Input.Pointer,
+            object: Phaser.GameObjects.GameObject
+        ): void => {
+            const card = object as Phaser.GameObjects.Rectangle;
+            const caption = captions.get(card);
+            if (!caption) return;
+
+            dragOrigins.set(card, { x: card.x, y: card.y });
+            card.setDepth(10);
+            caption.setDepth(11);
+        };
+
+        const onDrag = (
+            _pointer: Phaser.Input.Pointer,
+            object: Phaser.GameObjects.GameObject,
+            dragX: number,
+            dragY: number
+        ): void => {
+            const card = object as Phaser.GameObjects.Rectangle;
+            const caption = captions.get(card);
+            if (!caption) return;
+
+            card.setPosition(dragX, dragY);
+            caption.setPosition(dragX, dragY);
+        };
+
+        const onDragEnd = (
+            _pointer: Phaser.Input.Pointer,
+            object: Phaser.GameObjects.GameObject
+        ): void => {
+            const card = object as Phaser.GameObjects.Rectangle;
+            const caption = captions.get(card);
+            if (!caption) return;
+
+            const origin = dragOrigins.get(card) ?? { x: card.x, y: card.y };
+            const closest = slots.reduce((best, slot) =>
+                Phaser.Math.Distance.Between(card.x, card.y, slot.x, slot.y) <
+                Phaser.Math.Distance.Between(card.x, card.y, best.x, best.y) ? slot : best, slots[0]);
+            const distance = Phaser.Math.Distance.Between(card.x, card.y, closest.x, closest.y);
+            const occupant = slotOccupants.get(closest);
+
+            if (distance <= 100 && (!occupant || occupant === card)) {
+                const previousSlot = cardSlots.get(card);
+                if (previousSlot && previousSlot !== closest) {
+                    slotOccupants.delete(previousSlot);
+                    previousSlot.setFillStyle(0x142238);
                 }
-                this.input.on("dragstart", (_pointer: Phaser.Input.Pointer, object: Phaser.GameObjects.GameObject) => {
-                    const card = object as Phaser.GameObjects.Rectangle;
-                    card.setDepth(10);
-                    (card.getData("caption") as Phaser.GameObjects.Text).setDepth(11);
-                });
-                this.input.on("drag", (_pointer: Phaser.Input.Pointer, object: Phaser.GameObjects.GameObject, dragX: number, dragY: number) => {
-                    const card = object as Phaser.GameObjects.Rectangle;
-                    card.setPosition(dragX, dragY);
-                    const caption = card.getData("caption") as Phaser.GameObjects.Text;
-                    caption.setPosition(dragX, dragY);
-                });
-                this.input.on("dragend", (_pointer: Phaser.Input.Pointer, object: Phaser.GameObjects.GameObject) => {
-                    const card = object as Phaser.GameObjects.Rectangle;
-                    const caption = card.getData("caption") as Phaser.GameObjects.Text;
-                    const closest = slots.reduce((best, slot) =>
-                        Phaser.Math.Distance.Between(card.x, card.y, slot.x, slot.y) <
-                        Phaser.Math.Distance.Between(card.x, card.y, best.x, best.y) ? slot : best, slots[0]);
-                    const distance = Phaser.Math.Distance.Between(card.x, card.y, closest.x, closest.y);
-                    if (distance <= 100) {
-                        card.setPosition(closest.x, closest.y);
-                        caption.setPosition(closest.x, closest.y);
-                        closest.setFillStyle(0x1b3b4b);
-                        this.statusText.setText("Карточка закреплена в слоте. Попробуйте другую.");
-                    } else {
-                        card.setPosition(card.getData("homeX") as number, card.getData("homeY") as number);
-                        caption.setPosition(card.x, card.y);
-                        this.statusText.setText("Промах: карточка возвращена на исходную позицию.");
-                    }
-                    card.setDepth(0);
-                    caption.setDepth(1);
-                });
+
+                slotOccupants.set(closest, card);
+                cardSlots.set(card, closest);
+                card.setPosition(closest.x, closest.y);
+                caption.setPosition(closest.x, closest.y);
+                closest.setFillStyle(0x1b3b4b);
+                this.statusText.setText(`Карточка закреплена в слоте ${slots.indexOf(closest) + 1}. Попробуйте другую.`);
+            } else {
+                card.setPosition(origin.x, origin.y);
+                caption.setPosition(origin.x, origin.y);
+                if (distance <= 100 && occupant && occupant !== card) {
+                    this.statusText.setText("Слот занят другой карточкой. Карточка возвращена на прежнее место.");
+                } else {
+                    this.statusText.setText("Промах: карточка возвращена на прежнее место.");
+                }
+            }
+
+            dragOrigins.delete(card);
+            card.setDepth(0);
+            caption.setDepth(1);
+        };
+
+        this.input.on("dragstart", onDragStart);
+        this.input.on("drag", onDrag);
+        this.input.on("dragend", onDragEnd);
+
+        this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+            this.input.off("dragstart", onDragStart);
+            this.input.off("drag", onDrag);
+            this.input.off("dragend", onDragEnd);
+        });
     }
 
     /* END-USER-CODE */

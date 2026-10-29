@@ -26,7 +26,9 @@ npm run build
 
 ## Каталог
 
-Полная таблица сценариев, покрываемых возможностей и известных ограничений: [CATALOG.md](CATALOG.md).\n\nСвязь с оригинальными Phaser-примерами и лицензирование: [SOURCE-REFERENCES.md](SOURCE-REFERENCES.md).
+Полная таблица сценариев, покрываемых возможностей и известных ограничений: [CATALOG.md](CATALOG.md).
+
+Связь с оригинальными Phaser-примерами и лицензирование: [SOURCE-REFERENCES.md](SOURCE-REFERENCES.md).
 
 ## Работа с редактором
 

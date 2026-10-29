@@ -14,9 +14,9 @@ class PlatformerLevel extends Phaser.Scene {
 
     editorCreate(): void {
         // background
-        const background = this.add.rectangle(480, 320, 960, 640, 0x091322, 1);
+        const background = this.add.rectangle(720, 320, 1440, 640, 0x091322, 1);
         // skyPanel
-        const skyPanel = this.add.rectangle(480, 230, 960, 460, 0x0d1b2d, 1);
+        const skyPanel = this.add.rectangle(720, 230, 1440, 460, 0x0d1b2d, 1);
         // moon
         const moon = this.add.ellipse(790, 94, 74, 74, 0xffd58a, 1);
         // starA
@@ -30,7 +30,7 @@ class PlatformerLevel extends Phaser.Scene {
         // mountainFront
         const mountainFront = this.add.rectangle(690, 442, 540, 145, 0x18344a, 1);
         // ground
-        this.ground = this.add.rectangle(480, 614, 960, 52, 0x274b54, 1);
+        this.ground = this.add.rectangle(720, 614, 1440, 52, 0x274b54, 1);
         // platformA
         this.platformA = this.add.rectangle(282, 462, 190, 24, 0x34d6cb, 1);
         // platformB
@@ -46,10 +46,10 @@ class PlatformerLevel extends Phaser.Scene {
         // coinC
         this.coinC = this.add.ellipse(790, 242, 24, 24, 0xffd166, 1);
         // levelTitle
-        const levelTitle = this.add.text(28, 28, "PLATFORMER / ARCADE PHYSICS", { fontFamily: "Arial", fontSize: "22px", fontStyle: "bold", color: "#f4f7ff", align: "left" });
+        this.levelTitle = this.add.text(28, 28, "PLATFORMER / ARCADE PHYSICS", { fontFamily: "Arial", fontSize: "22px", fontStyle: "bold", color: "#f4f7ff", align: "left" });
         levelTitle.setOrigin(0, 0.5);
         // controlsHint
-        const controlsHint = this.add.text(28, 58, "← → движение · Space прыжок · соберите все три жетона", { fontFamily: "Arial", fontSize: "14px", fontStyle: "normal", color: "#91a4c2", align: "left" });
+        this.controlsHint = this.add.text(28, 58, "← → движение · Space прыжок · 3 жетона · камера следует за героем", { fontFamily: "Arial", fontSize: "14px", fontStyle: "normal", color: "#91a4c2", align: "left" });
         controlsHint.setOrigin(0, 0.5);
         // scoreText
         const scoreText = this.add.text(915, 35, "Жетоны: 0 / 3", { fontFamily: "Arial", fontSize: "16px", fontStyle: "bold", color: "#ffdf91", align: "right" });
@@ -71,6 +71,8 @@ class PlatformerLevel extends Phaser.Scene {
     private coinA!: Phaser.GameObjects.Ellipse;
     private coinB!: Phaser.GameObjects.Ellipse;
     private coinC!: Phaser.GameObjects.Ellipse;
+    private levelTitle!: Phaser.GameObjects.Text;
+    private controlsHint!: Phaser.GameObjects.Text;
     private scoreText!: Phaser.GameObjects.Text;
     private resultText!: Phaser.GameObjects.Text;
 
@@ -95,7 +97,12 @@ class PlatformerLevel extends Phaser.Scene {
 
     create(): void {
         this.editorCreate();
-        this.physics.world.setBounds(0, 0, 960, 640);
+        // HUD фиксируется относительно viewport, а игровой мир шире экрана.
+        this.levelTitle.setScrollFactor(0);
+        this.controlsHint.setScrollFactor(0);
+        this.scoreText.setScrollFactor(0);
+        this.resultText.setScrollFactor(0);
+        this.physics.world.setBounds(0, 0, 1440, 640);
                 this.physics.add.existing(this.player);
                 const body = (this.player as unknown as { body: Phaser.Physics.Arcade.Body }).body;
                 body.setCollideWorldBounds(true);
@@ -114,7 +121,7 @@ class PlatformerLevel extends Phaser.Scene {
                     this.physics.add.existing(coin, true);
                     this.physics.add.overlap(this.player, coin, () => this.collectCoin(coin));
                 });
-                this.cameras.main.setBounds(0, 0, 960, 640);
+                this.cameras.main.setBounds(0, 0, 1440, 640);
                 this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
     }
 
@@ -125,7 +132,8 @@ class PlatformerLevel extends Phaser.Scene {
                 else body.setVelocityX(0);
         
                 if (Phaser.Input.Keyboard.JustDown(this.jumpKey) && (body.blocked.down || body.touching.down)) {
-                    body.setVelocityY(-470);
+                    // При gravity 920 импульс 540 даёт около 158 px высоты — первая платформа достижима.
+                    body.setVelocityY(-540);
                 }
     }
 

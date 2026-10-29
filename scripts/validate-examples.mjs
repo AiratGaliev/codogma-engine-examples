@@ -38,6 +38,68 @@ async function exists(file) {
 
 if (projects.length < 1) fail("В каталоге examples не найдено проектов.");
 
+/*
+ * Проверяем физически достижимую первую платформу и реальные границы прокрутки камеры.
+ * Это статическая регрессия: формула высоты прыжка h = v² / (2g) не заменяет runtime-приёмку.
+ */
+const platformerDir = path.join(examplesDir, "03-platformer-physics");
+const platformerMain = await readFile(path.join(platformerDir, "main.ts"), "utf8").catch(() => "");
+const platformerSource = await readFile(path.join(platformerDir, "scenes", "PlatformerLevel.ts"), "utf8").catch(() => "");
+let platformerScene;
+try {
+    platformerScene = JSON.parse(await readFile(path.join(platformerDir, "scenes", "PlatformerLevel.scene"), "utf8"));
+} catch (error) {
+    fail(`03-platformer-physics: невозможно проверить геометрию уровня (${error.message})`);
+}
+
+if (platformerScene) {
+    const byLabel = (label) => platformerScene.displayList?.find((object) => object.label === label);
+    const ground = byLabel("ground");
+    const firstPlatform = byLabel("platformA");
+    const background = byLabel("background");
+    const skyPanel = byLabel("skyPanel");
+
+    const viewportMatch = platformerMain.match(/width:\\s*(\\d+)/);
+    const gravityMatch = platformerMain.match(/gravity:\\s*\\{\\s*x:\\s*0,\\s*y:\\s*(\\d+(?:\\.\\d+)?)\\s*\\}/);
+    const jumpMatch = platformerSource.match(/setVelocityY\\(\\s*(-?\\d+(?:\\.\\d+)?)\\s*\\)/);
+    const worldBoundsMatch = platformerSource.match(/this\\.physics\\.world\\.setBounds\\(0,\\s*0,\\s*(\\d+(?:\\.\\d+)?),\\s*640\\)/);
+    const cameraBoundsMatch = platformerSource.match(/this\\.cameras\\.main\\.setBounds\\(0,\\s*0,\\s*(\\d+(?:\\.\\d+)?),\\s*640\\)/);
+
+    if (!viewportMatch || !gravityMatch || !jumpMatch || !worldBoundsMatch || !cameraBoundsMatch) {
+        fail("03-platformer-physics: не удалось проверить параметры viewport, гравитации, прыжка и камеры");
+    } else {
+        const viewportWidth = Number(viewportMatch[1]);
+        const gravityY = Number(gravityMatch[1]);
+        const jumpVelocity = Math.abs(Number(jumpMatch[1]));
+        const worldWidth = Number(worldBoundsMatch[1]);
+        const cameraWidth = Number(cameraBoundsMatch[1]);
+
+        if (worldWidth <= viewportWidth) {
+            fail("03-platformer-physics: мир не шире viewport — горизонтальная прокрутка камеры невозможна");
+        }
+        if (cameraWidth !== worldWidth) {
+            fail("03-platformer-physics: границы камеры не совпадают с шириной игрового мира");
+        }
+        if (!ground || !background || !skyPanel ||
+            ground.x - ground.width / 2 > 0 || ground.x + ground.width / 2 < worldWidth ||
+            background.width < worldWidth || skyPanel.width < worldWidth) {
+            fail("03-platformer-physics: земля или фон не покрывают всю ширину мира камеры");
+        }
+        if (!ground || !firstPlatform || !Number.isFinite(gravityY) || gravityY <= 0 ||
+            !Number.isFinite(jumpVelocity) || jumpVelocity <= 0) {
+            fail("03-platformer-physics: отсутствуют корректные параметры земли, платформы или прыжка");
+        } else {
+            const groundTop = ground.y - ground.height / 2;
+            const platformTop = firstPlatform.y - firstPlatform.height / 2;
+            const requiredRise = groundTop - platformTop;
+            const jumpHeight = jumpVelocity * jumpVelocity / (2 * gravityY);
+            if (jumpHeight < requiredRise + 5) {
+                fail(`03-platformer-physics: прыжок ${jumpHeight.toFixed(1)} px ниже необходимого подъёма ${requiredRise.toFixed(1)} px до первой платформы`);
+            }
+        }
+    }
+}
+
 for (const project of projects) {
     const dir = path.join(examplesDir, project);
     for (const name of ["README.md", "index.html", "main.ts", "tsconfig.json"]) {
