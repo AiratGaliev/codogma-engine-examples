@@ -72,11 +72,11 @@ class RoomScene extends Phaser.Scene {
                 portals.forEach((portal, index) => {
                     // У Container задаём размер, чтобы hit area не был нулевым.
                     portal.setSize(220, 154);
-                    portal.setInteractive(
-                        new Phaser.Geom.Rectangle(-110, -77, 220, 154),
-                        Phaser.Geom.Rectangle.Contains,
-                        { useHandCursor: true }
-                    );
+                    portal.setInteractive({
+                        hitArea: new Phaser.Geom.Rectangle(-110, -77, 220, 154),
+                        hitAreaCallback: Phaser.Geom.Rectangle.Contains,
+                        useHandCursor: true
+                    });
                     portal.on("pointerdown", () => {
                         portal.tone = nextTone[portal.tone] ?? "cyan";
                         this.statusText.setText(`Портал ${index + 1}: ${portal.tone}`);
